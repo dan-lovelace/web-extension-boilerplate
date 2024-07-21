@@ -1,7 +1,7 @@
-import readline from "node:readline";
+import nodeReadLine from "node:readline";
+import path from "path";
 
 import chalk from "chalk";
-import path from "path";
 import { ReplaceInFileConfig, replaceInFileSync } from "replace-in-file";
 import { z, ZodError } from "zod";
 
@@ -15,17 +15,20 @@ const DEFAULT_EXTENSION_NAME = "Web Extension Boilerplate";
 const DEFAULT_PACKAGE_PREFIX = "@wexb";
 const DEFAULT_PROJECT_NAME = "web-extension-boilerplate";
 
-const __dirname = process.cwd();
-
 const commonReplaceOptions: ReplaceInFileConfig = {
-  files: path.join(__dirname, "**", "*"),
+  files: path.join("**", "*"),
   ignore: [
-    path.join(__dirname, "dist", "**", "*"),
-    path.join(__dirname, "node_modules", "**", "*"),
-    path.join(__dirname, "scripts", "**", "*"),
-    path.join(__dirname, "README.md"),
+    path.join("dist", "**", "*"),
+    path.join("node_modules", "**", "*"),
+    path.join("scripts", "**", "*"),
+    path.join("README.md"),
   ],
 };
+
+const readLine = nodeReadLine.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
 const validatedInitConfig: z.ZodType<InitConfig> = z.lazy(() =>
   z.object({
@@ -35,16 +38,11 @@ const validatedInitConfig: z.ZodType<InitConfig> = z.lazy(() =>
   })
 );
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
 function buildConfirmationMessage(config: InitConfig) {
   const message = `
-    ####################
-    Confirmation
-    ####################
+    ############################################################
+    CONFIRM CHOICES
+    ############################################################
 
     ${chalk.yellow(
       "Proceed with caution. It may be difficult to change these later."
@@ -71,63 +69,66 @@ function buildConfirmationMessage(config: InitConfig) {
 
 async function getConfig() {
   return new Promise<InitConfig>((res, rej) => {
-    rl.question(
+    readLine.question(
       "Extension name (example: My Cool Extension): ",
       (extensionName) => {
-        rl.question(
+        readLine.question(
           "Project name (example: my-cool-extension): ",
           (projectName) => {
-            rl.question("Package prefix (example: mce): ", (packagePrefix) => {
-              console.log("");
+            readLine.question(
+              "Package prefix (example: mce): ",
+              (packagePrefix) => {
+                console.log("");
 
-              try {
-                const validated = validatedInitConfig.parse({
-                  extensionName,
-                  packagePrefix,
-                  projectName,
-                });
+                try {
+                  const validated = validatedInitConfig.parse({
+                    extensionName,
+                    packagePrefix,
+                    projectName,
+                  });
 
-                if (
-                  new Set([
-                    extensionName.trim().toLowerCase(),
-                    packagePrefix.trim().toLowerCase(),
-                    projectName.trim().toLowerCase(),
-                  ]).size !== 3
-                ) {
-                  console.log(
-                    chalk.red("You may not choose the same name twice.")
-                  );
-                  return rl.close();
-                }
-
-                rl.question(
-                  buildConfirmationMessage(validated) + " ",
-                  (response) => {
-                    if (response.trim().toLowerCase() !== "y") {
-                      console.log("Aborting initialization");
-                      return rl.close();
-                    }
-
-                    console.log(`Initializing ${validated.extensionName}...`);
-
-                    rl.close();
-                    res(validated);
+                  if (
+                    new Set([
+                      extensionName.trim().toLowerCase(),
+                      packagePrefix.trim().toLowerCase(),
+                      projectName.trim().toLowerCase(),
+                    ]).size !== 3
+                  ) {
+                    console.log(
+                      chalk.red("You may not choose the same name twice.")
+                    );
+                    return readLine.close();
                   }
-                );
-              } catch (error) {
-                console.log(
-                  "Something went wrong validating your input. Please address the following issues and try again."
-                );
 
-                if (error instanceof ZodError) {
-                  console.log(error.errors);
-                } else {
-                  console.log(error);
+                  readLine.question(
+                    buildConfirmationMessage(validated) + " ",
+                    (response) => {
+                      if (response.trim().toLowerCase() !== "y") {
+                        console.log("Aborting initialization");
+                        return readLine.close();
+                      }
+
+                      console.log(`Initializing ${validated.extensionName}...`);
+
+                      readLine.close();
+                      res(validated);
+                    }
+                  );
+                } catch (error) {
+                  console.log(
+                    "Something went wrong validating your input. Please address the following issues and try again."
+                  );
+
+                  if (error instanceof ZodError) {
+                    console.log(error.errors);
+                  } else {
+                    console.log(error);
+                  }
+
+                  readLine.close();
                 }
-
-                rl.close();
               }
-            });
+            );
           }
         );
       }
@@ -149,37 +150,25 @@ async function main() {
 
   try {
     console.log("Replacing extension name");
-    const extensionNameResults = replaceInFileSync({
+    replaceInFileSync({
       ...commonReplaceOptions,
       from: new RegExp(DEFAULT_EXTENSION_NAME, "g"),
       to: initConfig.extensionName,
     });
-    console.log(
-      "extensionNameResults",
-      extensionNameResults.filter((r) => r.hasChanged)
-    );
 
     console.log("Replacing project name");
-    const projectNameResults = replaceInFileSync({
+    replaceInFileSync({
       ...commonReplaceOptions,
       from: new RegExp(DEFAULT_PROJECT_NAME, "g"),
       to: initConfig.projectName,
     });
-    console.log(
-      "projectNameResults",
-      projectNameResults.filter((r) => r.hasChanged)
-    );
 
     console.log("Replacing package prefix");
-    const packagePrefixResults = replaceInFileSync({
+    replaceInFileSync({
       ...commonReplaceOptions,
       from: new RegExp(DEFAULT_PACKAGE_PREFIX, "g"),
       to: `@${initConfig.packagePrefix}`,
     });
-    console.log(
-      "packagePrefixResults",
-      packagePrefixResults.filter((r) => r.hasChanged)
-    );
   } catch (err) {
     console.log("err", err);
   }

@@ -1,59 +1,31 @@
-/* eslint-disable no-console */
-import { spawn } from "child_process";
 import fs from "fs";
-import path from "path";
 
-const OUT_DIR = "dist";
+import chalk from "chalk";
 
-function writeManifest() {
-  const { manifestJSON, version: packageVersion } = JSON.parse(
-    fs.readFileSync("package.json", "utf-8")
-  );
-  const [, , manifestVersion] = process.argv;
-
-  if (!["2", "3"].includes(manifestVersion)) {
-    console.log("Invalid manifest version. Available options: 2, 3");
-    console.log("Usage:\n\n");
-    console.log("node build.mjs 3");
-    process.exit(1);
-  }
-
-  const versionJSON = manifestJSON[`v${manifestVersion}`];
-  const manifest = {
-    ...versionJSON,
-    version: packageVersion,
-  };
-
-  fs.writeFileSync(
-    path.join(OUT_DIR, "manifest.json"),
-    JSON.stringify(manifest, null, 2),
-    "utf-8"
-  );
-}
+import { clean, OUT_DIR } from "./lib/common";
+import { spawnProcess } from "./lib/spawn";
+import { getManifestVersion, writeManifestJSON } from "./lib/manifest";
 
 function main() {
+  const manifestVersion = getManifestVersion();
+
   if (!fs.existsSync(OUT_DIR)) {
     fs.mkdirSync(OUT_DIR, { recursive: true });
   }
 
-  const lernaProcess = spawn("lerna", ["run", "build"], { shell: true });
-  let stderr = "";
+  clean();
 
-  lernaProcess.stderr.on("data", (data) => {
-    stderr += data.toString();
-  });
+  spawnProcess("lerna", ["run", "build"], {
+    onError: () => {
+      clean();
 
-  lernaProcess.stdout.on("data", (data) => {
-    console.log(data.toString());
-  });
-
-  lernaProcess.on("close", (code) => {
-    if (code !== 0) {
-      console.error(`Build error: ${stderr}`);
-      process.exit(1);
-    } else {
-      writeManifest();
-    }
+      console.log(
+        chalk.red("One of more of your builds failed. Check the output above.")
+      );
+    },
+    onSuccess: () => {
+      writeManifestJSON(manifestVersion);
+    },
   });
 }
 

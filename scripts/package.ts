@@ -1,70 +1,47 @@
-/* eslint-disable no-console */
-import { exec } from "child_process";
 import fs from "fs";
-import path from "path";
 
-import archiver from "archiver";
+import chalk from "chalk";
 
-const __dirname = process.cwd();
-const DIST_DIR = "dist";
-const VERSIONS_DIR = "versions";
+import { VERSIONS_DIR } from "./lib/common";
+import { getManifestVersion, postProcessManifest } from "./lib/manifest";
+import { spawnProcess } from "./lib/spawn";
+import { getPackageFilename, zipPackage } from "./lib/zip";
+
+function handleError() {
+  console.log("❌", chalk.red("Package not successful"));
+}
 
 function main() {
-  const manifestVersion = process.argv[2];
-  const packageJson = fs.readFileSync("package.json", "utf-8");
-  const { name, version: packageVersion } = JSON.parse(packageJson);
-  const outputFile = path.join(
-    __dirname,
-    VERSIONS_DIR,
-    `${name}_${packageVersion}_m${manifestVersion}.zip`
-  );
+  const manifestVersion = getManifestVersion();
+  const packageFilename = getPackageFilename(manifestVersion);
 
-  if (fs.existsSync(outputFile)) {
-    throw new Error(`Output file already exists: ${outputFile}`);
+  if (fs.existsSync(packageFilename)) {
+    throw new Error(`Package already exists: ${packageFilename}`);
   }
 
-  exec(`npm run build ${manifestVersion}`, (execError, stdout, stderr) => {
-    if (execError) {
-      console.log(stderr);
-      process.exit(1);
-    }
+  spawnProcess("npm", ["run", "build", manifestVersion], {
+    onError: () => {
+      handleError();
+    },
+    onSuccess: async () => {
+      if (!fs.existsSync(VERSIONS_DIR)) {
+        fs.mkdirSync(VERSIONS_DIR);
+      }
 
-    if (!fs.existsSync(VERSIONS_DIR)) {
-      fs.mkdirSync(VERSIONS_DIR);
-    }
+      postProcessManifest(manifestVersion);
 
-    if (manifestVersion === "2") {
-      // remove development settings from manifest
-      const manifestLocation = path.join(__dirname, DIST_DIR, "manifest.json");
-      const versionJSON = JSON.parse(
-        fs.readFileSync(manifestLocation, "utf-8")
-      );
+      try {
+        await zipPackage(packageFilename);
 
-      delete versionJSON["browser_specific_settings"];
-      fs.writeFileSync(manifestLocation, JSON.stringify(versionJSON), "utf-8");
-    }
-
-    const output = fs.createWriteStream(outputFile);
-    const archive = archiver("zip", {
-      zlib: {
-        level: 9,
-      },
-    });
-
-    archive.on("error", (archiveError) => {
-      throw archiveError;
-    });
-
-    archive.pipe(output);
-    archive.glob("**/*", {
-      cwd: DIST_DIR,
-      ignore: [".DS_Store"],
-    });
-    archive.finalize();
-
-    output.on("close", () => {
-      console.log(stdout);
-    });
+        console.log(
+          "✅",
+          chalk.green("Package successful"),
+          chalk.dim(packageFilename)
+        );
+      } catch (_) {
+        handleError();
+      }
+    },
   });
 }
 
