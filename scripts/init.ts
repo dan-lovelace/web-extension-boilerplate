@@ -151,7 +151,7 @@ async function main() {
     console.log("Replacing extension name");
     const extensionNameResults = replaceInFileSync({
       ...commonReplaceOptions,
-      from: DEFAULT_EXTENSION_NAME,
+      from: new RegExp(DEFAULT_EXTENSION_NAME, "g"),
       to: initConfig.extensionName,
     });
     console.log(
@@ -162,7 +162,7 @@ async function main() {
     console.log("Replacing project name");
     const projectNameResults = replaceInFileSync({
       ...commonReplaceOptions,
-      from: DEFAULT_PROJECT_NAME,
+      from: new RegExp(DEFAULT_PROJECT_NAME, "g"),
       to: initConfig.projectName,
     });
     console.log(
@@ -173,7 +173,7 @@ async function main() {
     console.log("Replacing package prefix");
     const packagePrefixResults = replaceInFileSync({
       ...commonReplaceOptions,
-      from: DEFAULT_PACKAGE_PREFIX,
+      from: new RegExp(DEFAULT_PACKAGE_PREFIX, "g"),
       to: `@${initConfig.packagePrefix}`,
     });
     console.log(
