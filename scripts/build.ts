@@ -20,7 +20,7 @@ function main() {
       clean();
 
       console.log(
-        chalk.red("One of more of your builds failed. Check the output above.")
+        chalk.red("One or more of your builds failed. Check the output above.")
       );
     },
     onSuccess: () => {

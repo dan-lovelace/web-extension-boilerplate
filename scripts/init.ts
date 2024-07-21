@@ -146,8 +146,6 @@ function trimLiteral(literal: string) {
 async function main() {
   const initConfig = await getConfig();
 
-  console.log("initConfig", initConfig);
-
   try {
     console.log("Replacing extension name");
     replaceInFileSync({
