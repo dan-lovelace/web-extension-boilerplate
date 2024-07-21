@@ -1,0 +1,118 @@
+{
+  "name": "web-extension-boilerplate",
+  "version": "0.0.0",
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "private": true,
+  "scripts": {
+    "build": "npm run clean && tsx scripts/build.ts",
+    "clean": "rimraf dist",
+    "init": "tsx scripts/init.ts",
+    "package": "tsx scripts/package.ts",
+    "start:2": "npm run clean && tsx scripts/build.ts 2 && lerna run start",
+    "start:3": "npm run clean && tsx scripts/build.ts 3 && lerna run start"
+  },
+  "devDependencies": {
+    "@types/archiver": "^6.0.2",
+    "archiver": "^7.0.1",
+    "lerna": "^8.1.6",
+    "replace-in-file": "^8.1.0",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.4",
+    "zod": "^3.23.8"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "manifestJSON": {
+    "v2": {
+      "name": "Web Extension Boilerplate",
+      "description": "A baseline for creating cross-browser web extensions.",
+      "homepage_url": "https://www.mozilla.org/",
+      "manifest_version": 2,
+      "icons": {
+        "48": "assets/img/logo_64.png",
+        "128": "assets/img/logo_128.png",
+        "256": "assets/img/logo_256.png"
+      },
+      "browser_action": {
+        "default_popup": "popup.html"
+      },
+      "background": {
+        "scripts": [
+          "background.js"
+        ]
+      },
+      "content_scripts": [
+        {
+          "matches": [
+            "<all_urls>"
+          ],
+          "js": [
+            "content.js"
+          ],
+          "run_at": "document_start"
+        }
+      ],
+      "permissions": [
+        "storage"
+      ],
+      "web_accessible_resources": [
+        "assets/*"
+      ],
+      "browser_specific_settings": {
+        "gecko": {
+          "id": "addon@example.com",
+          "strict_min_version": "1.0"
+        }
+      }
+    },
+    "v3": {
+      "name": "Web Extension Boilerplate",
+      "description": "A baseline for creating cross-browser web extensions.",
+      "homepage_url": "https://www.mozilla.org/",
+      "manifest_version": 3,
+      "icons": {
+        "48": "assets/img/logo_64.png",
+        "128": "assets/img/logo_128.png",
+        "256": "assets/img/logo_256.png"
+      },
+      "action": {
+        "default_popup": "popup.html"
+      },
+      "background": {
+        "service_worker": "background.js"
+      },
+      "content_scripts": [
+        {
+          "matches": [
+            "<all_urls>"
+          ],
+          "js": [
+            "content.js"
+          ],
+          "run_at": "document_start"
+        }
+      ],
+      "permissions": [
+        "storage"
+      ],
+      "web_accessible_resources": [
+        {
+          "resources": [
+            "assets/*"
+          ],
+          "matches": [
+            "<all_urls>"
+          ]
+        }
+      ]
+    }
+  }
+}

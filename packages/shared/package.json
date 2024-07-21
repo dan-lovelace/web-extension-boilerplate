@@ -1,0 +1,17 @@
+{
+  "name": "@wexb/shared",
+  "version": "0.0.0",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "echo \"Info: no build specified\"",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "dependencies": {
+    "webextension-polyfill": "^0.10.0"
+  },
+  "devDependencies": {
+    "@types/webextension-polyfill": "^0.10.7",
+    "@wexb/types": "*"
+  }
+}
