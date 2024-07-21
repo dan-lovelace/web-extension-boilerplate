@@ -8,12 +8,10 @@
   ],
   "private": true,
   "scripts": {
-    "build": "npm run clean && tsx scripts/build.ts",
-    "clean": "rimraf dist",
+    "build": "tsx scripts/build.ts",
     "init": "tsx scripts/init.ts",
     "package": "tsx scripts/package.ts",
-    "start:2": "npm run clean && tsx scripts/build.ts 2 && lerna run start",
-    "start:3": "npm run clean && tsx scripts/build.ts 3 && lerna run start"
+    "start": "tsx scripts/start.ts"
   },
   "devDependencies": {
     "@types/archiver": "^6.0.2",
