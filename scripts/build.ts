@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { exec } from "child_process";
+import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
 
@@ -36,15 +36,24 @@ function main() {
     fs.mkdirSync(OUT_DIR, { recursive: true });
   }
 
-  exec("lerna run build", (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${stderr}`);
+  const lernaProcess = spawn("lerna", ["run", "build"], { shell: true });
+  let stderr = "";
+
+  lernaProcess.stderr.on("data", (data) => {
+    stderr += data.toString();
+  });
+
+  lernaProcess.stdout.on("data", (data) => {
+    console.log(data.toString());
+  });
+
+  lernaProcess.on("close", (code) => {
+    if (code !== 0) {
+      console.error(`Build error: ${stderr}`);
       process.exit(1);
+    } else {
+      writeManifest();
     }
-
-    writeManifest();
-
-    console.log(stdout);
   });
 }
 
