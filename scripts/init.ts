@@ -18,7 +18,6 @@ const DEFAULT_PROJECT_NAME = "web-extension-boilerplate";
 const __dirname = process.cwd();
 
 const commonReplaceOptions: ReplaceInFileConfig = {
-  dry: true,
   files: path.join(__dirname, "**", "*"),
   ignore: [
     path.join(__dirname, "dist", "**", "*"),
@@ -175,7 +174,7 @@ async function main() {
     const packagePrefixResults = replaceInFileSync({
       ...commonReplaceOptions,
       from: DEFAULT_PACKAGE_PREFIX,
-      to: initConfig.packagePrefix,
+      to: `@${initConfig.packagePrefix}`,
     });
     console.log(
       "packagePrefixResults",
