@@ -199,20 +199,25 @@ npm run package 3
 
 ### Removing unnecessary packages
 
-The `background`, `content`, and `popup` packages are all optional. If your
-extension doesn't need one of them, simply delete its directory from `packages`.
-If you're unsure about deleting it entirely, you may omit a package from the
-main build by updating its relative `build` command in `package.json` to
-something like:
+The `background`, `content`, and `popup` packages are all optional. There are
+two methods for removing them:
 
-```json
-# packages/popup/package.json
-{
-  "scripts": {
-    "build": "echo \"Info: no build specified\""
-  }
-}
-```
+1. Delete its directory from `packages` - This is permanent and should only be
+   done if you're sure you won't need it.
+1. Omit it from the main build by updating its relative `build` command in
+   `package.json` to something like:
+   ```json
+   # packages/popup/package.json
+   {
+     "scripts": {
+       "build": "echo \"Info: no build specified\""
+     }
+   }
+   ```
+
+Regardless of the chosen method, the manifest JSON in
+[package.json](./package.json) will also need to be updated so it doesn't
+reference missing scripts or actions.
 
 ## Troubleshooting
 
