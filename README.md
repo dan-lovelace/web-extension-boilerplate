@@ -209,7 +209,7 @@ something like:
 # packages/popup/package.json
 {
   "scripts": {
-    "build": "echo \"Info: no build specified\" && exit 0"
+    "build": "echo \"Info: no build specified\""
   }
 }
 ```
