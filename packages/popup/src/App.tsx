@@ -1,8 +1,8 @@
 import { LocationProvider, Router, Route } from "preact-iso";
 
 import { ROUTES } from "./lib/routes";
-import HomePage from "./pages/HomePage/HomePage";
-import NotFoundPage from "./pages/NotFound";
+import { HomePage } from "./pages/HomePage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 export function App() {
   return (
