@@ -1,9 +1,9 @@
-import fs from "fs";
+import fs from "node:fs";
 
 import chalk from "chalk";
+import { execa } from "execa";
 
 import { clean, OUT_DIR } from "./lib/common";
-import { spawnProcess } from "./lib/spawn";
 import { getManifestVersion, writeManifestJSON } from "./lib/manifest";
 
 function main() {
@@ -15,18 +15,21 @@ function main() {
 
   clean();
 
-  spawnProcess("lerna", ["run", "build"], {
-    onError: () => {
+  execa({
+    stderr: ["pipe", "inherit"],
+    stdout: ["pipe", "inherit"],
+  })`lerna run build`
+    .then(() => {
+      writeManifestJSON(manifestVersion);
+    })
+    .catch(() => {
       clean();
 
       console.log(
-        chalk.red("One of more of your builds failed. Check the output above.")
+        chalk.red("One or more of your builds failed. Check the output above.")
       );
-    },
-    onSuccess: () => {
-      writeManifestJSON(manifestVersion);
-    },
-  });
+      process.exit(1);
+    });
 }
 
 main();

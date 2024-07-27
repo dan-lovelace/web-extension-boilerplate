@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/archiver": "^6.0.2",
     "archiver": "^7.0.1",
+    "execa": "^9.3.0",
     "lerna": "^8.1.6",
     "replace-in-file": "^8.1.0",
     "rimraf": "^6.0.1",

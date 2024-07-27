@@ -1,11 +1,8 @@
-import { render } from "preact";
 import { LocationProvider, Router, Route } from "preact-iso";
 
-import "./style.css";
-
 import { ROUTES } from "./lib/routes";
-import HomePage from "./pages/Home";
-import NotFoundPage from "./pages/NotFound";
+import { HomePage } from "./pages/HomePage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 export function App() {
   return (
@@ -17,5 +14,3 @@ export function App() {
     </LocationProvider>
   );
 }
-
-render(<App />, document.getElementById("app") as HTMLElement);
