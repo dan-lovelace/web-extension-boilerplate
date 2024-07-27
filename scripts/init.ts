@@ -58,7 +58,7 @@ function buildConfirmationMessage(config: InitConfig) {
 
       Package prefix: '${chalk.green(
         config.packagePrefix
-      )}'. When you need to use some shared code between\npackages, your import statements will look like this: '${chalk.blue(
+      )}'. When you need to use some shared code between\npackages, your import statements will look like this: '${chalk.cyan(
     `@${config.packagePrefix}/types`
   )}'.
 
