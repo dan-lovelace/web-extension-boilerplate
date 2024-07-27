@@ -144,31 +144,31 @@ function trimLiteral(literal: string) {
 }
 
 async function main() {
-  const initConfig = await getConfig();
+  const { extensionName, packagePrefix, projectName } = await getConfig();
 
   try {
     console.log("Replacing extension name");
     replaceInFileSync({
       ...commonReplaceOptions,
       from: new RegExp(DEFAULT_EXTENSION_NAME, "g"),
-      to: initConfig.extensionName,
+      to: extensionName,
     });
 
     console.log("Replacing project name");
     replaceInFileSync({
       ...commonReplaceOptions,
       from: new RegExp(DEFAULT_PROJECT_NAME, "g"),
-      to: initConfig.projectName,
+      to: projectName,
     });
 
     console.log("Replacing package prefix");
     replaceInFileSync({
       ...commonReplaceOptions,
       from: new RegExp(DEFAULT_PACKAGE_PREFIX, "g"),
-      to: `@${initConfig.packagePrefix}`,
+      to: `@${packagePrefix}`,
     });
   } catch (err) {
-    console.log("err", err);
+    console.log(chalk.red("Replacement error\n"), err);
   }
 }
 
