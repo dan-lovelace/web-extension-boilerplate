@@ -27,6 +27,7 @@ purpose.
   - [`package`](#package) - Builds and packages everything to a ZIP file for
     publishing
 - [Project structure](#project-structure)
+  - [Removing unnecessary packages](#removing-unnecessary-packages)
 - [Troubleshooting](#troubleshooting)
 
 ## What's included?
@@ -68,7 +69,7 @@ Easily manage different `manifest.json` versions directly inside `package.json`.
 
 - [NodeJS](https://nodejs.org/) version 20 or higher
   - Recommended: [nvm](https://github.com/nvm-sh/nvm) - Run `nvm use` to use the
-    required version or `nvm install 20` to install it
+    required version or `nvm install 20` to install it.
 
 ### Steps
 
@@ -103,7 +104,7 @@ Easily manage different `manifest.json` versions directly inside `package.json`.
     your `start` command. After all packages have started, you're ready to load
     the unpacked extension from this location in your browser of choice. The
     process for this varies so be sure to look up the latest steps recommended
-    by your browser. Here are some instructions for two popular browsers:
+    by your browser. Here are some instructions for two popular ones:
     - Chrome:
       https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked
     - Firefox:
@@ -158,7 +159,8 @@ npm run build 3
 ### `package`
 
 Prepares your project for publishing on extension stores. It generates ZIP files
-that may be uploaded directly in the extension management dashboards.
+in a directory named `versions` that may be uploaded directly in the extension
+management dashboards.
 
 #### Sample usage
 
@@ -183,9 +185,9 @@ npm run package 3
       your extension as
       [web-accessible resources](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/web_accessible_resources).
       This is enabled by the `web_accessible_resources` setting in
-      `package.json`. Assets are built to `dist/assets/` and their access URLs
-      may be generated using the `getAssetURL` helper method in the `shared`
-      package.
+      `package.json`. At build time, assets are copied to `dist/assets/` and
+      their access URLs may be generated using the `getAssetURL` helper method
+      in the `shared` package.
   - `packages/popup/` - The extension's
     [Popup window](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Popups).
   - `packages/shared/` - Common configurations and helper methods used across
@@ -193,6 +195,28 @@ npm run package 3
   - `packages/types/` - All of the project's types.
 - `scripts/` - Various scripts defined in the root `package.json`.
 - `versions/` - [Package](#package) command output directory.
+
+### Removing unnecessary packages
+
+The `background`, `content`, and `popup` packages are all optional. If your
+extension doesn't need one of them, simply delete its directory from `packages`.
+If you're unsure about deleting it entirely, you may omit a package from the
+main build by updating its relative `build` command in `package.json` to
+something like:
+
+```json
+// packages/popup/package.json
+
+{
+  [...]
+  "scripts": {
+    [...]
+    "build": "echo \"Info: no build specified\" && exit 0",
+    [...]
+  },
+  [...]
+}
+```
 
 ## Troubleshooting
 
