@@ -158,9 +158,10 @@ npm run build 3
 
 ### `package`
 
-Prepares your project for publishing on extension stores. It generates ZIP files
-in a directory named `versions` that may be uploaded directly in the extension
-management dashboards.
+Prepares your project for publishing to the extension stores. It generates a ZIP
+file, with the given manifest version, that may be uploaded directly in the
+extension management dashboards. Output files are placed in the `versions`
+directory.
 
 #### Sample usage
 
