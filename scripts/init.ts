@@ -1,5 +1,5 @@
 import nodeReadLine from "node:readline";
-import path from "path";
+import path from "node:path";
 
 import chalk from "chalk";
 import { ReplaceInFileConfig, replaceInFileSync } from "replace-in-file";
@@ -54,7 +54,7 @@ function buildConfirmationMessage(config: InitConfig) {
 
       Project name: '${chalk.green(
         config.projectName
-      )}'. If you make your extension's code available to\nthe public, this is what they'll use locally when making contributions.
+      )}'. If you make your extension's code available to\nthe public, this is what they'll use locally when making contributions.\nIt will also show up other places like the ZIP files created when publishing.
 
       Package prefix: '${chalk.green(
         config.packagePrefix
@@ -68,7 +68,7 @@ function buildConfirmationMessage(config: InitConfig) {
 }
 
 async function getConfig() {
-  return new Promise<InitConfig>((res, rej) => {
+  return new Promise<InitConfig>((res) => {
     readLine.question(
       "Extension name (example: My Cool Extension): ",
       (extensionName) => {
@@ -104,7 +104,7 @@ async function getConfig() {
                     buildConfirmationMessage(validated) + " ",
                     (response) => {
                       if (response.trim().toLowerCase() !== "y") {
-                        console.log("Aborting initialization");
+                        console.log("Initialization exited.");
                         return readLine.close();
                       }
 
@@ -116,15 +116,15 @@ async function getConfig() {
                   );
                 } catch (error) {
                   console.log(
-                    "Something went wrong validating your input. Please address the following issues and try again."
+                    chalk.red(
+                      "Something went wrong validating your input. Address the following issues and try again."
+                    )
                   );
 
-                  if (error instanceof ZodError) {
-                    console.log(error.errors);
-                  } else {
-                    console.log(error);
-                  }
+                  const errorOutput =
+                    error instanceof ZodError ? error.errors : error;
 
+                  console.log(errorOutput);
                   readLine.close();
                 }
               }
@@ -147,21 +147,21 @@ async function main() {
   const { extensionName, packagePrefix, projectName } = await getConfig();
 
   try {
-    console.log("Replacing extension name");
+    console.log("Replacing extension name...");
     replaceInFileSync({
       ...commonReplaceOptions,
       from: new RegExp(DEFAULT_EXTENSION_NAME, "g"),
       to: extensionName,
     });
 
-    console.log("Replacing project name");
+    console.log("Replacing project name...");
     replaceInFileSync({
       ...commonReplaceOptions,
       from: new RegExp(DEFAULT_PROJECT_NAME, "g"),
       to: projectName,
     });
 
-    console.log("Replacing package prefix");
+    console.log("Replacing package prefix...");
     replaceInFileSync({
       ...commonReplaceOptions,
       from: new RegExp(DEFAULT_PACKAGE_PREFIX, "g"),

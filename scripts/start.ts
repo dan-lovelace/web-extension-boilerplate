@@ -1,13 +1,22 @@
+import { execa } from "execa";
+
 import { clean } from "./lib/common";
 import { getManifestVersion, writeManifestJSON } from "./lib/manifest";
-import { spawnProcess } from "./lib/spawn";
 
-function main() {
+async function main() {
   const manifestVersion = getManifestVersion();
 
   clean();
   writeManifestJSON(manifestVersion);
-  spawnProcess("lerna", ["run", "start"]);
+
+  execa({
+    stderr: ["pipe", "inherit"],
+    stdout: ["pipe", "inherit"],
+  })`lerna run start`.catch(() => {
+    /**
+     * NOTE: Explicitly do nothing because Lerna emits its own errors.
+     */
+  });
 }
 
 main();

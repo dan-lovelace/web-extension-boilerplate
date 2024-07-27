@@ -1,10 +1,10 @@
-import fs from "fs";
+import fs from "node:fs";
 
 import chalk from "chalk";
+import { execa } from "execa";
 
 import { VERSIONS_DIR } from "./lib/common";
 import { getManifestVersion, postProcessManifest } from "./lib/manifest";
-import { spawnProcess } from "./lib/spawn";
 import { getPackageFilename, zipPackage } from "./lib/zip";
 
 function handleError() {
@@ -19,11 +19,11 @@ function main() {
     throw new Error(`Package already exists: ${packageFilename}`);
   }
 
-  spawnProcess("npm", ["run", "build", manifestVersion], {
-    onError: () => {
-      handleError();
-    },
-    onSuccess: async () => {
+  execa({
+    stderr: ["pipe", "inherit"],
+    stdout: ["pipe", "inherit"],
+  })`npm run build ${manifestVersion}`
+    .then(async () => {
       if (!fs.existsSync(VERSIONS_DIR)) {
         fs.mkdirSync(VERSIONS_DIR);
       }
@@ -34,15 +34,17 @@ function main() {
         await zipPackage(packageFilename);
 
         console.log(
-          "✅",
+          "📦",
           chalk.green("Package successful"),
           chalk.dim(packageFilename)
         );
       } catch (_) {
         handleError();
       }
-    },
-  });
+    })
+    .catch(() => {
+      handleError();
+    });
 }
 
 main();
