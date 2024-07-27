@@ -38,12 +38,12 @@ and follow the [startup guide](#getting-started) below.
 
 ### Browser popup window
 
-A toolbar popup for your extension built using a handful of simple
+A toolbar popup for your extension that's built using a handful of simple
 [Preact](https://preactjs.com/) components. Any other libraries or frameworks
-may be used that produce output compatible with settings available to the
+may be used alongside or in place of Preact. Read about the
 [`action`](https://developer.chrome.com/docs/extensions/reference/api/action)/
 [`browser_action`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_action)
-section of your manifest.
+section of your manifest to make sure your tools of choice are supported.
 
 <img alt="popup script preview" src="https://i.imgur.com/35H3kAz.png" width="640" height="360" />
 
