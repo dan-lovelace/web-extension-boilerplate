@@ -1,16 +1,20 @@
 # Web Extension Boilerplate
 
-This is a baseline project for creating cross-browser extensions. It produces
-separate builds for
-[manifest versions 2 and 3](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json).
-If you're brand new to extension development, be sure to
+This is a baseline project for creating cross-browser extensions. It is capable
+of targeting
+[manifest versions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/manifest_version)
+2 and 3. If you're brand new to extension development, be sure to
 [read the basics](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions)
 so you have a handle on the different packages in this project and their
 purpose.
 
+To get started quickly,
+[clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+and follow the [startup guide](#getting-started) below.
+
 ## Table of contents
 
-- [What's included?](#whats-included)
+- [What's included](#whats-included)
   - [Browser popup window](#browser-popup-window)
   - [Content script](#content-script)
   - [Background script](#background-script)
@@ -30,7 +34,7 @@ purpose.
   - [Removing unnecessary packages](#removing-unnecessary-packages)
 - [Troubleshooting](#troubleshooting)
 
-## What's included?
+## What's included
 
 ### Browser popup window
 
@@ -88,6 +92,14 @@ Easily manage different `manifest.json` versions directly inside `package.json`.
     ```
     npm install
     ```
+1.  _Optional_: Change the default `manifest.json` settings:
+    - Open the file [package.json](./package.json)
+    - Find the section `manifestJSON`
+    - Notice the two sections `v2` and `v3` for each manifest version
+    - Add, modify or delete values based on the versions you intend to support -
+      If you change something under `v3` and intend to publish a manifest
+      version 2 of your extension, you'll need to make the equivalent change
+      under `v2`.
 1.  Now you have a choice of using either manifest version 2 or 3, depending on
     which browser you'd like to use. Run the `start` command with your desired
     version ([details](#start)):
