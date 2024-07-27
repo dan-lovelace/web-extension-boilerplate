@@ -11,9 +11,6 @@
     "moduleResolution": "Node",
     "noEmit": true,
     "paths": {
-      "@wexb/background": ["packages/background"],
-      "@wexb/content": ["packages/content"],
-      "@wexb/popup": ["packages/popup"],
       "@wexb/shared": ["packages/shared"],
       "@wexb/types": ["packages/types"]
     },
