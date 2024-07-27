@@ -88,31 +88,65 @@ directly inside `package.json`.
 
 ### Steps
 
-1.  To get started, you first need to initialize your project. The boilerplate
+1.  **Initialize**
+
+    To get started, you first need to initialize your project. The boilerplate
     code contains several things that need customizing such as your extension's
     display name ([details](#init)):
+
     ```sh
     npm run init
     ```
-1.  Proceed through the series of initialization prompts and confirm your
+
+1.  **Complete initialization**
+
+    Proceed through the series of initialization prompts and confirm your
     choices at the end to save them. A number of files will be updated and it is
     recommended to inspect the changes to make sure they align with your
     expectations.
-1.  Once you're happy with the initialization results, install Node
-    dependencies:
+
+1.  **Install dependencies**
+
+    Once you're happy with the initialization results, check your Node version
+    to make sure you're using 20 or higher:
+
+    ```sh
+    # should return at least version 20
+    node --version
+    ```
+
+    - Tip: Use [nvm](https://github.com/nvm-sh/nvm) to manage multiple Node
+      versions. Run `nvm use` anywhere inside this project to pick it up.
+
+    Run the install command:
+
     ```
     npm install
     ```
-1.  _Optional_: Change the default `manifest.json` settings:
+
+1.  _Optional_: **Update default manifest permissions**
+
+    You may skip this step for now if you'd like. Just make sure to update the
+    default values at some point before you decide to publish your extension.
+
+    By default, the manifest settings ask for very broad permissions such as
+    accessing data on all visited sites and local storage. You should take time
+    to de-scope the parts that say `<all_urls>` and `permissions`. Depending on
+    its purpose, a lot of users are turned off when an extension requests too
+    much information and may decide to not use or uninstall it.
+
     - Open the file [package.json](./package.json)
     - Find the section `manifestJSON`
     - Notice the two sections `v2` and `v3` for each manifest version
-    - Add, modify or delete values based on the versions you intend to support -
-      If you change something under `v3` and intend to publish a manifest
-      version 2 of your extension, you'll need to make the equivalent change
-      under `v2`.
-1.  Now you have a choice of using either manifest version 2 or 3, depending on
-    which browser you'd like to use. Run the `start` command with your desired
+    - Add, modify or delete values based on the features and versions you intend
+      to support - If you change something under `v3` and plan to publish a
+      manifest version 2 of your extension, you'll need to make the equivalent
+      change under `v2`.
+
+1.  **Start server**
+
+    Depending on which browser you'd like to use, you now have a choice of
+    either manifest version 2 or 3. Run the `start` command with your desired
     version ([details](#start)):
 
     ```sh
@@ -123,11 +157,14 @@ directly inside `package.json`.
     npm run start 2
     ```
 
-1.  Notice a new `dist` directory has been created which holds the output of
+1.  **Find your build**
+
+    Notice a new `dist` directory has been created which holds the output of
     your `start` command. After all packages have started, you're ready to load
     the unpacked extension from this location in your browser of choice. The
     process for this varies so be sure to look up the latest steps recommended
     by your browser. Here are some instructions for two popular ones:
+
     - Chrome:
       https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked
     - Firefox:
