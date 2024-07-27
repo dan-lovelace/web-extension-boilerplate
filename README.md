@@ -38,9 +38,12 @@ and follow the [startup guide](#getting-started) below.
 
 ### Browser popup window
 
-A toolbar window for your extension built using a handful of simple
-[Preact](https://preactjs.com/) components. While Preact should be enough for
-most extensions, actual React may be swapped in with little difficulty.
+A toolbar popup for your extension built using a handful of simple
+[Preact](https://preactjs.com/) components. Any other libraries or frameworks
+may be used that produce output compatible with settings available to the
+[`action`](https://developer.chrome.com/docs/extensions/reference/api/action)/
+[`browser_action`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_action)
+section of your manifest.
 
 <img alt="popup script preview" src="https://i.imgur.com/35H3kAz.png" width="640" height="360" />
 
@@ -62,7 +65,9 @@ installed.
 
 ### Cross-browser compatibility
 
-Easily manage different `manifest.json` versions directly inside `package.json`.
+Easily manage different
+[manifest versions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/manifest_version)
+directly inside `package.json`.
 
 <img alt="manifest configuration preview" src="https://i.imgur.com/yM8oIiO.png" width="640" height="360" />
 
