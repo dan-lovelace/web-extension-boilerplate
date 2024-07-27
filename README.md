@@ -206,16 +206,11 @@ main build by updating its relative `build` command in `package.json` to
 something like:
 
 ```json
-// packages/popup/package.json
-
+# packages/popup/package.json
 {
-  [...]
   "scripts": {
-    [...]
-    "build": "echo \"Info: no build specified\" && exit 0",
-    [...]
-  },
-  [...]
+    "build": "echo \"Info: no build specified\" && exit 0"
+  }
 }
 ```
 
