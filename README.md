@@ -42,7 +42,7 @@ A toolbar window for your extension built using a handful of simple
 [Preact](https://preactjs.com/) components. While Preact should be enough for
 most extensions, actual React may be swapped in with little difficulty.
 
-![popup window preview](https://i.imgur.com/3XSvaX4.png)
+<img alt="popup script preview" src="https://i.imgur.com/35H3kAz.png" width="640" height="360" />
 
 ### Content script
 
@@ -51,14 +51,20 @@ highlights the cross-package import system provided by
 [NPM workspaces](https://docs.npmjs.com/cli/v10/using-npm/workspaces) and
 [Typescript paths](https://www.typescriptlang.org/tsconfig/#paths).
 
+<img alt="content script preview" src="https://i.imgur.com/X9CFKS2.png" width="640" height="360" />
+
 ### Background script
 
 A very basic background script that prints a message when the extension has been
 installed.
 
+<img alt="background script preview" src="https://i.imgur.com/BnfqDCv.png" width="640" height="360" />
+
 ### Cross-browser compatibility
 
 Easily manage different `manifest.json` versions directly inside `package.json`.
+
+<img alt="manifest configuration preview" src="https://i.imgur.com/yM8oIiO.png" width="640" height="360" />
 
 ## Technologies used
 
