@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "build": "tsx scripts/build.ts",
-    "init": "tsx scripts/init.ts",
+    "init": "npm install && tsx scripts/init.ts",
     "package": "tsx scripts/package.ts",
     "start": "tsx scripts/start.ts"
   },

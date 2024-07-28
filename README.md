@@ -8,7 +8,7 @@ of targeting
 so you have a handle on the different packages in this project and their
 purpose.
 
-To get started quickly,
+To get started,
 [clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
 and follow the [startup guide](#getting-started) below.
 
@@ -22,7 +22,8 @@ and follow the [startup guide](#getting-started) below.
 - [Technologies used](#technologies-used)
 - [Getting started](#getting-started)
   - [Requirements](#requirements)
-  - [Steps](#steps)
+  - [Quick start](#quick-start)
+  - [In-depth guide](#in-depth-guide)
 - [All commands](#all-commands)
   - [`init`](#init) - Initializes a new project
   - [`start`](#start) - Runs project code and watches for file changes (most
@@ -31,6 +32,7 @@ and follow the [startup guide](#getting-started) below.
   - [`package`](#package) - Builds and packages everything to a ZIP file for
     publishing
 - [Project structure](#project-structure)
+  - [Updating the manifest](#updating-the-manifest)
   - [Removing unnecessary packages](#removing-unnecessary-packages)
 - [Troubleshooting](#troubleshooting)
 
@@ -86,62 +88,56 @@ directly inside `package.json`.
   - Recommended: [nvm](https://github.com/nvm-sh/nvm) - Run `nvm use` to use the
     required version or `nvm install 20` to install it.
 
-### Steps
+### Quick start
 
-1.  **Initialize**
+If you've done this kind of thing before, these commands will get you up and
+running quickly:
 
-    To get started, you first need to initialize your project. The boilerplate
-    code contains several things that need customizing such as your extension's
-    display name ([details](#init)):
+1. Initialize a new project:
+   ```
+   npm run init
+   ```
+1. Targeting manifest version 3, start a development server and watch for file
+   changes:
+   ```
+   npm run start 3
+   ```
+1. Build output is located in your [dist](./dist/) directory. Take a look at the
+   [rest of the commands](#all-commands) and the
+   [project structure](#project-structure) to learn more.
+
+### In-depth guide
+
+To get started, you first need to initialize your project. The boilerplate
+contains several things that need customizing such as your extension's display
+name ([details](#init)). In addition to renaming things, the initialization
+script also takes care of installing dependencies. Use the `npm install` command
+in the future if your dependencies change.
+
+1.  **Run initialization command**
 
     ```sh
     npm run init
     ```
 
-1.  **Complete initialization**
+1.  **Complete initialization and verify**
 
-    Proceed through the series of initialization prompts and confirm your
-    choices at the end to save them. A number of files will be updated and it is
-    recommended to inspect the changes to make sure they align with your
-    expectations.
+    After running `npm run init`, proceed through the series of prompts and
+    confirm your choices when you're ready. A number of files will be updated
+    and it is recommended to inspect the changes to make sure they align with
+    your expectations.
 
-1.  **Install dependencies**
-
-    Once you're happy with the initialization results, check your Node version
-    to make sure you're using 20 or higher:
-
-    ```sh
-    # should return at least version 20
-    node --version
-    ```
-
-    - Tip: Use [nvm](https://github.com/nvm-sh/nvm) to manage multiple Node
-      versions. Run `nvm use` anywhere inside this project to pick it up.
-
-    Run the install command:
-
-    ```
-    npm install
-    ```
-
-1.  _Optional_: **Update default manifest permissions**
-
-    You may skip this step for now if you'd like. Just make sure to update the
-    default values at some point before you decide to publish your extension.
+1.  _Optional_: **Update manifest permissions**
 
     By default, the manifest settings ask for very broad permissions such as
-    accessing data on all visited sites and local storage. You should take time
-    to de-scope the parts that say `<all_urls>` and `permissions`. Depending on
-    its purpose, a lot of users are turned off when an extension requests too
-    much information and may decide to not use or uninstall it.
+    accessing data on all sites and modifying local storage. While this may be
+    okay during early stages of development, you should take time to de-scope
+    the parts that say `<all_urls>` and `permissions`. Before publishing, your
+    extension's permissions should require only those necessary for it to
+    function.
 
-    - Open the file [package.json](./package.json)
-    - Find the section `manifestJSON`
-    - Notice the two sections `v2` and `v3` for each manifest version
-    - Add, modify or delete values based on the features and versions you intend
-      to support - If you change something under `v3` and plan to publish a
-      manifest version 2 of your extension, you'll need to make the equivalent
-      change under `v2`.
+    See the section about [updating the manifest](#updating-the-manifest) for
+    instructions.
 
 1.  **Start server**
 
@@ -231,8 +227,9 @@ npm run package 3
 
 ## Project structure
 
-- `dist/` - [Build](#build) and [Start](#start) output directory. This is where
-  to load unpacked extensions in your browser settings when testing changes.
+- `dist/` - [`build`](#build) and [`start`](#start) output directory. This is
+  where to load unpacked extensions in your browser settings when testing
+  changes.
 - `packages/` -
   [NPM workspaces](https://docs.npmjs.com/cli/v10/using-npm/workspaces)
   directory that stores individual project packages.
@@ -254,43 +251,64 @@ npm run package 3
   - `packages/shared/` - Common configurations and helper methods used across
     more than one package.
   - `packages/types/` - All of the project's types.
-- `scripts/` - Various scripts defined in the root `package.json`.
-- `versions/` - [Package](#package) command output directory.
+- `scripts/` - Various scripts defined in the root
+  [package.json](./package.json).
+- `versions/` - [`package`](#package) command output directory.
+
+### Updating the manifest
+
+Manifest configurations are located in the root-level
+[package.json](./package.json) under the key `manifestJSON`. To make changes:
+
+1. Open the file [package.json](./package.json)
+1. Find the section `manifestJSON`
+1. Notice the two sections `v2` and `v3` for each manifest version
+1. Add, modify or delete values based on the features and versions you intend to
+   support - If you change something under `v3` and plan to publish a manifest
+   version 2 of your extension, you'll need to make the equivalent change under
+   `v2`.
+1. Changing manifest JSON requires a project re-build using either the
+   [`build`](#build) or [`start`](#start) commands
 
 ### Removing unnecessary packages
 
-The `background`, `content`, and `popup` packages are all optional. There are
-two methods for removing them:
+The `background`, `content`, and `popup` packages are individually optional. If
+you do not need one or more of them, there are two methods of removal:
 
-1. Delete its directory from `packages` - This is permanent and should only be
-   done if you're sure you won't need it.
-1. Omit it from the main build by updating its relative `build` command in
-   `package.json` to something like:
-   ```json
-   # packages/popup/package.json
+1. **Silent (preferred)** - Omit a package from the main build by updating its
+   relative `build` command in `package.json` with the following change:
+
+   ```diff
+   # Filename:
+   #   packages/popup/package.json
+
    {
      "scripts": {
-       "build": "echo \"Info: no build specified\""
+   -    "build": "tsc && vite build",
+   +    "build": "echo \"Info: no build specified\"",
      }
    }
    ```
 
-Regardless of the chosen method, the manifest JSON in
-[package.json](./package.json) will also need to be updated so it doesn't
-reference missing scripts or actions.
+   In this example, we quietly disable the [popup package](./packages/popup/)
+   entirely while maintaining its source code. It is no longer part of our build
+   but is ready to be included any time in the future.
+
+1. **Nuclear** - Delete the package's directory from `packages`. This is
+   permanent and should only be done if you are certain you won't need it.
 
 ## Troubleshooting
 
 ### Issue: Failing build
 
-Things to check:
+#### Common solutions
 
-- If you've run the initialization script via `npm run init`, make sure you
-  `npm install` again if you haven't already.
+- If you've already ran the initialization script `npm run init`, see if running
+  `npm install` clears anything up.
 
 ### Issue: Invalid manifest version errors
 
-Things to check:
+#### Common solutions
 
 - Make sure you're running a version supported by the browser you're using.
   Version 2 manifests cannot be loaded in Chrome. If you've ran
