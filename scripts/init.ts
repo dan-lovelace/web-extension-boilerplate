@@ -2,6 +2,7 @@ import nodeReadLine from "node:readline";
 import path from "node:path";
 
 import chalk from "chalk";
+import { execa } from "execa";
 import { ReplaceInFileConfig, replaceInFileSync } from "replace-in-file";
 import { z, ZodError } from "zod";
 
@@ -167,6 +168,9 @@ async function main() {
       from: new RegExp(DEFAULT_PACKAGE_PREFIX, "g"),
       to: `@${packagePrefix}`,
     });
+
+    console.log("Updating dependencies with new name...");
+    execa`npm install`;
   } catch (err) {
     console.log(chalk.red("Replacement error\n"), err);
   }

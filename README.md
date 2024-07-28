@@ -80,6 +80,16 @@ directly inside `package.json`.
 
 ## Getting started
 
+### Quick start
+
+If you've done this kind of thing before, run these commands in order to get
+your local development server going:
+
+| #   | Command        | Description            |
+| --- | -------------- | ---------------------- |
+| 1   | `npm run init` | Initialize new project |
+| 2   | `npm install`  | Install dependencies   |
+
 ### Requirements
 
 - [NodeJS](https://nodejs.org/) version 20 or higher
