@@ -301,14 +301,14 @@ you do not need one or more of them, there are two methods of removal:
 
 ### Issue: Failing build
 
-Things to check:
+#### Common solutions
 
 - If you've already ran the initialization script `npm run init`, see if running
   `npm install` clears anything up.
 
 ### Issue: Invalid manifest version errors
 
-Things to check:
+#### Common solutions
 
 - Make sure you're running a version supported by the browser you're using.
   Version 2 manifests cannot be loaded in Chrome. If you've ran
