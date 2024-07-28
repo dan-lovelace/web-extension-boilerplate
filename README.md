@@ -102,40 +102,41 @@ running quickly:
    ```
    npm run start 3
    ```
-1. Build output is located in the [dist](./dist/) directory. Take a look at the
+1. Build output is located in your [dist](./dist/) directory. Take a look at the
    [rest of the commands](#all-commands) and the
    [project structure](#project-structure) to learn more.
 
 ### In-depth guide
 
-1.  **Initialize**
+To get started, you first need to initialize your project. The boilerplate
+contains several things that need customizing such as your extension's display
+name ([details](#init)). In addition to renaming things, the initialization
+script also takes care of installing dependencies. Use the `npm install` command
+in the future if your dependencies change.
 
-    To get started, you first need to initialize your project. The boilerplate
-    code contains several things that need customizing such as your extension's
-    display name ([details](#init)). In addition to renaming things, the
-    initialization script also takes care of installing dependencies. Use the
-    `npm install` command in the future if your dependencies change.
+1.  **Run initialization command**
 
     ```sh
     npm run init
     ```
 
-1.  **Verify initialization**
+1.  **Complete initialization and verify**
 
-    After running `npm run init`, proceed through the series of initialization
-    prompts and confirm your choices when you're ready. A number of files will
-    be updated and it is recommended to inspect the changes to make sure they
-    align with your expectations.
+    After running `npm run init`, proceed through the series of prompts and
+    confirm your choices when you're ready. A number of files will be updated
+    and it is recommended to inspect the changes to make sure they align with
+    your expectations.
 
 1.  _Optional_: **Update manifest permissions**
 
     By default, the manifest settings ask for very broad permissions such as
-    accessing data on all visited sites and local storage. You should take time
-    to de-scope the parts that say `<all_urls>` and `permissions`. Depending on
-    its purpose, a lot of users are turned off when an extension requests too
-    much information and may decide to not use or uninstall it.
+    accessing data on all sites and modifying local storage. While this may be
+    okay during early stages of development, you should take time to de-scope
+    the parts that say `<all_urls>` and `permissions`. Before publishing, your
+    extension's permissions should require only those necessary for it to
+    function.
 
-    See the section [updating the manifest](#updating-the-manifest) for
+    See the section about [updating the manifest](#updating-the-manifest) for
     instructions.
 
 1.  **Start server**
