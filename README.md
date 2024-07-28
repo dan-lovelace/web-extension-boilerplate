@@ -24,6 +24,7 @@ and follow the [startup guide](#getting-started) below.
   - [Requirements](#requirements)
   - [Quick start](#quick-start)
   - [In-depth guide](#in-depth-guide)
+- [Packaging](#packaging)
 - [All commands](#all-commands)
   - [`init`](#init) - Initializes a new project
   - [`start`](#start) - Runs project code and watches for file changes (most
@@ -165,6 +166,22 @@ in the future if your dependencies change.
       https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked
     - Firefox:
       https://blog.mozilla.org/addons/2015/12/23/loading-temporary-add-ons/
+
+## Packaging
+
+Once your extension has reached a state ready for publish, use the `package`
+command to generate a new version. It uses the `version` value in
+[package.json](./package.json) which will need to be updated beforehand:
+
+1. Open [package.json](./package.json)
+1. Increase the `version` number to whatever makes sense for the given changes -
+   Review [semantic versioning](https://semver.org/) if you're not sure.
+1. Run the `package` command for each desired manifest version:
+   ```sh
+   npm run package 3
+   ```
+1. The new version is placed in the `versions` directory where it is ready to be
+   uploaded to the extension stores
 
 ## All commands
 
