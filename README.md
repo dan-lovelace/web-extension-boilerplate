@@ -290,9 +290,9 @@ you do not need one or more of them, there are two methods of removal:
    }
    ```
 
-   In this example, we quietly disable the popup package entirely while
-   maintaining its source code. It is no longer part of our build but is ready
-   to be included any time in the future.
+   In this example, we quietly disable the [popup package](./packages/popup/)
+   entirely while maintaining its source code. It is no longer part of our build
+   but is ready to be included any time in the future.
 
 1. **Nuclear** - Delete the package's directory from `packages`. This is
    permanent and should only be done if you are certain you won't need it.
@@ -303,8 +303,8 @@ you do not need one or more of them, there are two methods of removal:
 
 Things to check:
 
-- If you've run the initialization script via `npm run init`, make sure you
-  `npm install` again if you haven't already.
+- If you've run the initialization script via `npm run init`, see if running
+  `npm install` clears anything up.
 
 ### Issue: Invalid manifest version errors
 
