@@ -8,7 +8,7 @@ of targeting
 so you have a handle on the different packages in this project and their
 purpose.
 
-To get started quickly,
+To get started,
 [clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
 and follow the [startup guide](#getting-started) below.
 
@@ -22,7 +22,8 @@ and follow the [startup guide](#getting-started) below.
 - [Technologies used](#technologies-used)
 - [Getting started](#getting-started)
   - [Requirements](#requirements)
-  - [Steps](#steps)
+  - [Quick start](#quick-start)
+  - [In-depth guide](#in-depth-guide)
 - [All commands](#all-commands)
   - [`init`](#init) - Initializes a new project
   - [`start`](#start) - Runs project code and watches for file changes (most
@@ -31,6 +32,7 @@ and follow the [startup guide](#getting-started) below.
   - [`package`](#package) - Builds and packages everything to a ZIP file for
     publishing
 - [Project structure](#project-structure)
+  - [Updating the manifest](#updating-the-manifest)
   - [Removing unnecessary packages](#removing-unnecessary-packages)
 - [Troubleshooting](#troubleshooting)
 
@@ -80,64 +82,52 @@ directly inside `package.json`.
 
 ## Getting started
 
-### Quick start
-
-If you've done this kind of thing before, run these commands in order to get
-your local development server going:
-
-| #   | Command        | Description            |
-| --- | -------------- | ---------------------- |
-| 1   | `npm run init` | Initialize new project |
-| 2   | `npm install`  | Install dependencies   |
-
 ### Requirements
 
 - [NodeJS](https://nodejs.org/) version 20 or higher
   - Recommended: [nvm](https://github.com/nvm-sh/nvm) - Run `nvm use` to use the
     required version or `nvm install 20` to install it.
 
-### Steps
+### Quick start
+
+If you've done this kind of thing before, these commands will get you up and
+running quickly:
+
+1. Initialize a new project:
+   ```
+   npm run init
+   ```
+1. Targeting manifest version 3, start a development server and watch for file
+   changes:
+   ```
+   npm run start 3
+   ```
+1. Build output is located in the [dist](./dist/) directory. Take a look at the
+   [rest of the commands](#all-commands) and the
+   [project structure](#project-structure) to learn more.
+
+### In-depth guide
 
 1.  **Initialize**
 
     To get started, you first need to initialize your project. The boilerplate
     code contains several things that need customizing such as your extension's
-    display name ([details](#init)):
+    display name ([details](#init)). In addition to renaming things, the
+    initialization script also takes care of installing dependencies. Use the
+    `npm install` command in the future if your dependencies change.
 
     ```sh
     npm run init
     ```
 
-1.  **Complete initialization**
+1.  **Verify initialization**
 
-    Proceed through the series of initialization prompts and confirm your
-    choices at the end to save them. A number of files will be updated and it is
-    recommended to inspect the changes to make sure they align with your
-    expectations.
+    After running `npm run init`, proceed through the series of initialization
+    prompts and confirm your choices when you're ready. A number of files will
+    be updated and it is recommended to inspect the changes to make sure they
+    align with your expectations.
 
-1.  **Install dependencies**
-
-    Once you're happy with the initialization results, check your Node version
-    to make sure you're using 20 or higher:
-
-    ```sh
-    # should return at least version 20
-    node --version
-    ```
-
-    - Tip: Use [nvm](https://github.com/nvm-sh/nvm) to manage multiple Node
-      versions. Run `nvm use` anywhere inside this project to pick it up.
-
-    Run the install command:
-
-    ```
-    npm install
-    ```
-
-1.  _Optional_: **Update default manifest permissions**
-
-    You may skip this step for now if you'd like. Just make sure to update the
-    default values at some point before you decide to publish your extension.
+1.  _Optional_: **Update manifest permissions**
 
     By default, the manifest settings ask for very broad permissions such as
     accessing data on all visited sites and local storage. You should take time
@@ -145,13 +135,8 @@ your local development server going:
     its purpose, a lot of users are turned off when an extension requests too
     much information and may decide to not use or uninstall it.
 
-    - Open the file [package.json](./package.json)
-    - Find the section `manifestJSON`
-    - Notice the two sections `v2` and `v3` for each manifest version
-    - Add, modify or delete values based on the features and versions you intend
-      to support - If you change something under `v3` and plan to publish a
-      manifest version 2 of your extension, you'll need to make the equivalent
-      change under `v2`.
+    See the section [updating the manifest](#updating-the-manifest) for
+    instructions.
 
 1.  **Start server**
 
@@ -266,6 +251,21 @@ npm run package 3
   - `packages/types/` - All of the project's types.
 - `scripts/` - Various scripts defined in the root `package.json`.
 - `versions/` - [Package](#package) command output directory.
+
+### Updating the manifest
+
+Manifest configurations are located in the root-level
+[package.json](./package.json) under the key `manifestJSON`. To make changes:
+
+1. Open the file [package.json](./package.json)
+1. Find the section `manifestJSON`
+1. Notice the two sections `v2` and `v3` for each manifest version
+1. Add, modify or delete values based on the features and versions you intend to
+   support - If you change something under `v3` and plan to publish a manifest
+   version 2 of your extension, you'll need to make the equivalent change under
+   `v2`.
+1. Changing manifest JSON requires a project re-build using either the
+   [`build`](#build) or [`start`](#start) commands.
 
 ### Removing unnecessary packages
 
