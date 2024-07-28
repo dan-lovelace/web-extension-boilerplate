@@ -227,8 +227,9 @@ npm run package 3
 
 ## Project structure
 
-- `dist/` - [Build](#build) and [Start](#start) output directory. This is where
-  to load unpacked extensions in your browser settings when testing changes.
+- `dist/` - [`build`](#build) and [`start`](#start) output directory. This is
+  where to load unpacked extensions in your browser settings when testing
+  changes.
 - `packages/` -
   [NPM workspaces](https://docs.npmjs.com/cli/v10/using-npm/workspaces)
   directory that stores individual project packages.
@@ -250,8 +251,9 @@ npm run package 3
   - `packages/shared/` - Common configurations and helper methods used across
     more than one package.
   - `packages/types/` - All of the project's types.
-- `scripts/` - Various scripts defined in the root `package.json`.
-- `versions/` - [Package](#package) command output directory.
+- `scripts/` - Various scripts defined in the root
+  [package.json](./package.json).
+- `versions/` - [`package`](#package) command output directory.
 
 ### Updating the manifest
 
@@ -266,29 +268,34 @@ Manifest configurations are located in the root-level
    version 2 of your extension, you'll need to make the equivalent change under
    `v2`.
 1. Changing manifest JSON requires a project re-build using either the
-   [`build`](#build) or [`start`](#start) commands.
+   [`build`](#build) or [`start`](#start) commands
 
 ### Removing unnecessary packages
 
-The `background`, `content`, and `popup` packages are all optional. There are
-two methods for removing them:
+The `background`, `content`, and `popup` packages are individually optional. If
+you do not need one or more of them, there are two methods of removal:
 
-1. Delete its directory from `packages` - This is permanent and should only be
-   done if you're sure you won't need it.
-1. Omit it from the main build by updating its relative `build` command in
-   `package.json` to something like:
-   ```json
-   # packages/popup/package.json
+1. **Silent (preferred)** - Omit a package from the main build by updating its
+   relative `build` command in `package.json` with the following change:
+
+   ```diff
+   # Filename:
+   #   packages/popup/package.json
+
    {
      "scripts": {
-       "build": "echo \"Info: no build specified\""
+   -    "build": "tsc && vite build",
+   +    "build": "echo \"Info: no build specified\"",
      }
    }
    ```
 
-Regardless of the chosen method, the manifest JSON in
-[package.json](./package.json) will also need to be updated so it doesn't
-reference missing scripts or actions.
+   In this example, we quietly disable the popup package entirely while
+   maintaining its source code. It is no longer part of our build but is ready
+   to be included any time in the future.
+
+1. **Nuclear** - Delete the package's directory from `packages`. This is
+   permanent and should only be done if you are certain you won't need it.
 
 ## Troubleshooting
 
