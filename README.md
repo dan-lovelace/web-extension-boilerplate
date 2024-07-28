@@ -303,7 +303,7 @@ you do not need one or more of them, there are two methods of removal:
 
 Things to check:
 
-- If you've run the initialization script via `npm run init`, see if running
+- If you've already ran the initialization script `npm run init`, see if running
   `npm install` clears anything up.
 
 ### Issue: Invalid manifest version errors
